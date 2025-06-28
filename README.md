@@ -1,8 +1,8 @@
-# Agents of Mayhem patch to fix crash with Steam Input
+# Agents of Mayhem patch to fix crash with Steam Input [![status-badge](https://woodpecker.jcm.re/api/badges/33/status.svg)](https://woodpecker.jcm.re/repos/33)
 Works with the latest version of the game on Steam (v1.06).
 
 ## Installation
-1. Download the file `VERSION.dll` from the [latest release](https://github.com/JnCrMx/aom-sd-controller-fix/releases/latest).
+1. Download the file `VERSION.dll` from the [latest release](https://github.com/JnCrMx/aom-sd-controller-fix/releases/latest) or download it from the [latest CI build](https://woodpecker.web.garage.jcm.re/artifacts/jcm/aom-sd-controller-fix/main/public/VERSION.dll).
 2. Move this file into the `aom` subfolder inside the game folder (`.../steamapps/common/Agents of Mayhem/aom`).
 3. Set the Launch Options of the game to:
    ```
