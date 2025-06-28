@@ -1,0 +1,6 @@
+[
+    {
+        "name": "MinGW x64",
+        "toolchainFile": "cmake/mingw-x64.cmake"
+    }
+]

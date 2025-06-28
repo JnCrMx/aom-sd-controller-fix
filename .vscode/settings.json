@@ -1,0 +1,5 @@
+{
+    "cmake.additionalKits": [
+        "${workspaceFolder}/cmake/kits.json"
+    ]
+}
