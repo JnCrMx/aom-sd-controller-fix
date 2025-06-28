@@ -1,0 +1,47 @@
+variables:
+  - &minio-settings
+    access_key:
+      from_secret: minio_access_key
+    secret_key:
+      from_secret: minio_secret_key
+    endpoint:
+      from_secret: minio_endpoint
+    path_style: true
+    region: eu-central-jcm
+
+steps:
+  build:
+    image: "ubuntu:rolling"
+    commands:
+      - apt-get update
+      - DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates git cmake ninja-build gcc-mingw-w64-x86-64-win32 g++-mingw-w64-x86-64-win32
+      - mkdir -p build
+      - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=cmake/mingw-x64.cmake -G Ninja -B build -S . 2>&1 | tee build/cmake-configure.log
+      - cmake --build build 2>&1 | tee build/cmake-build.log
+  upload-logs:
+    image: woodpeckerci/plugin-s3
+    settings:
+      <<: *minio-settings
+      bucket: woodpecker
+      source: build/cmake-*.log
+      strip_prefix: build/
+      target: /artifacts/${CI_REPO}/${CI_PIPELINE_NUMBER}/public/
+    when:
+      - status: [ success, failure ]
+  upload-build:
+    image: woodpeckerci/plugin-s3
+    settings:
+      <<: *minio-settings
+      bucket: woodpecker
+      source: build/VERSION.dll
+      strip_prefix: build/
+      target: /artifacts/${CI_REPO}/${CI_PIPELINE_NUMBER}/public/
+  upload-beta:
+    image: woodpeckerci/plugin-s3
+    settings:
+      <<: *minio-settings
+      bucket: woodpecker
+      source: build/VERSION.dll
+      strip_prefix: build/
+      target: /artifacts/${CI_REPO}/${CI_COMMIT_BRANCH}/public/
+      overwrite: true
