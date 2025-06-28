@@ -9,9 +9,17 @@ variables:
     path_style: true
     region: eu-central-jcm
 
+when:
+  - event: push
+  - event: manual
+
+labels:
+  compat: riscv64
+
 steps:
   build:
     image: "ubuntu:rolling"
+    pull: true
     commands:
       - apt-get update
       - DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates git cmake ninja-build gcc-mingw-w64-x86-64-win32 g++-mingw-w64-x86-64-win32
